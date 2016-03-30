@@ -28,6 +28,29 @@ gulp.task('packagingjs', function()
 gulp.task('default', ['packagingjs']);
 ```
 
+### Usage Via GULP w/gulp-sourcemaps
+
+```javascript
+var gulp = require('gulp');
+var gulp_packagingjs = require('gulp-packagingjs');
+var sourcemaps = require('gulp-sourcemaps');
+
+gulp.task('packagingjs', function()
+{
+	var input  = './sources/*.js';
+	var output = './compiled/';
+	
+	return gulp
+		.src(input)
+		.pipe(sourcemaps.init())
+		.pipe(gulp_packagingjs({strict:true, autorun:'instance', roots:['./sources/']}))
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest(output));
+});
+
+gulp.task('default', ['packagingjs']);
+```
+
 ### Using PackagingJS
 
 _See the <a href="https://www.npmjs.com/package/packagingjs">packagingjs npm module</a> for documentation on PackagingJS itself. The functionality is the same except for some differences noted here._

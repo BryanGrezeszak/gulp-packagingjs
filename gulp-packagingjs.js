@@ -2,6 +2,7 @@
 var through = require('through2');
 var gutil = require('gulp-util');
 var packagingjs = require('packagingjs');
+var applySourceMap = require('vinyl-sourcemaps-apply');
 
 
 // Plugin level function(dealing with files)
@@ -14,10 +15,21 @@ function gulp_packagingjs(options)
 			if (file.isNull())
 				return cb(null, file); // return empty file
 			if (file.isStream())
-				throw new gutil.PluginError('gulp-packagingjs', 'Streaming not supported.');
+				throw new Error('Streaming not supported.');
+			
+			// gulp-sourcemaps compatibility
+			if (file.sourceMap) {
+				options.sourcemap = true;
+				options.sourcemapin = file.sourceMap;
+			}
 			
 			var base = gutil.replaceExtension(file.path.split('\\').pop(), '');
-			file.contents = new Buffer(packagingjs(base, options));
+			var result = packagingjs(base, options);
+			file.contents = new Buffer(result.code);
+			
+			// gulp-sourcemaps compatibility | apply source map to the chain 
+			if (file.sourceMap)
+				applySourceMap(file, result.sourcemap);
 			
 			cb(null, file);
 		})
@@ -26,14 +38,6 @@ function gulp_packagingjs(options)
 	{
 		throw new gutil.PluginError('gulp-packagingjs', err.message);
 	}
-}
-
-
-function gulpStream(text)
-{
-	var stream = through();
-	stream.write(text);
-	return stream;
 }
 
 
