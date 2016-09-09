@@ -1,6 +1,6 @@
 {
   "name": "gulp-packagingjs",
-  "version": "0.4.0",
+  "version": "0.4.3",
   "description": "A GULP implementation of the packagingjs module.",
   "main": "gulp-packagingjs.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "gulp-util": "^3.0.7",
-    "packagingjs": "^0.4.0",
+    "packagingjs": "^0.4.2",
     "through2": "^2.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1"
   },
